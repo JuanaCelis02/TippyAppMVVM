@@ -1,5 +1,6 @@
 package com.example.tippyappmvvm.view
 
+import android.animation.ArgbEvaluator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -7,6 +8,8 @@ import android.text.TextWatcher
 import android.util.Log
 import android.widget.SeekBar
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
+import com.example.tippyappmvvm.R
 import com.example.tippyappmvvm.databinding.ActivityMainBinding
 import com.example.tippyappmvvm.viewmodel.MyViewModel
 
@@ -31,8 +34,9 @@ class MainActivity : AppCompatActivity() {
                  */
                 Log.i("TAG", "onProgressChanged $progress")
 
-                binding.tvTipPercentLabel.text = "$progress%"
+                binding.tvTipPercentLabel.text = progress.toString()
                 obtainTipAndTotal()
+                changeDescription()
             }
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
 
@@ -50,8 +54,25 @@ class MainActivity : AppCompatActivity() {
                  * Obtengo lo que el usuario esta escribiendo
                  */
                 Log.i("TAG", "afterTextChanged $s")
+                obtainTipAndTotal()
+                changeDescription()
             }
         })
+    }
+
+    private fun changeDescription() {
+        viewModel.addTipDescription(binding.seekBarTip.progress)
+        binding.tvDescriptionTip.text = viewModel.addTipDescription(binding.seekBarTip.progress).categoryTip
+        changeColorDescription()
+    }
+
+    private fun changeColorDescription() {
+        val color = ArgbEvaluator().evaluate(
+            binding.seekBarTip.progress.toFloat() / binding.seekBarTip.max,
+            ContextCompat.getColor(this, R.color.worst_tip),
+            ContextCompat.getColor(this, R.color.best_tip),
+        ) as Int
+        binding.tvDescriptionTip.setTextColor(color)
     }
 
     private fun obtainTipAndTotal() {
@@ -63,11 +84,12 @@ class MainActivity : AppCompatActivity() {
         /**
          * Se actualiza la actividad
          */
-        viewModel.calculateTipAmount(binding.etBaseAmount.text.toString(), binding.seekBarTip.progress)
-        binding.tvTipAmount.text = "%.3f".format(viewModel.savedTipValue)
+        val tipAmount = viewModel.calculateTipAmount(binding.etBaseAmount.text.toString(), binding.seekBarTip.progress)
+        binding.tvTipAmount.text = "%.3f".format(tipAmount)
 
-        viewModel.calculateTotalAmount(binding.etBaseAmount.text.toString())
-        binding.tvTotalAmount.text = "%.3f".format(viewModel.savedTotalAmount)
+        val totalAmount = viewModel.calculateTotalAmount(binding.etBaseAmount.text.toString())
+        binding.tvTotalAmount.text = "%.3f".format(totalAmount)
     }
+
 
 }

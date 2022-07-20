@@ -2,20 +2,21 @@ package com.example.tippyappmvvm.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.example.tippyappmvvm.model.CalculatorManager
+import com.example.tippyappmvvm.model.CategoryTip
 
 class MyViewModel: ViewModel() {
 
     private val calculatorManager = CalculatorManager()
-    var savedTipValue:Double? = null
-    var savedTotalAmount:Double? = null
 
-    fun calculateTipAmount(baseAmount:String, tipPercent:Int){
-        val tipValue = calculatorManager.calculateTipAmount(baseAmount, tipPercent)
-        savedTipValue = tipValue
+    fun calculateTipAmount(baseAmount:String, tipPercent:Int):Double{
+        return calculatorManager.calculateTipAmount(baseAmount, tipPercent)
     }
 
-    fun calculateTotalAmount(baseAmount: String){
-        val total = calculatorManager.calculateTotalAmount(baseAmount)
-        savedTotalAmount = total
+    fun calculateTotalAmount(baseAmount: String):Double{
+        return calculatorManager.calculateTotalAmount(baseAmount)
+    }
+
+    fun addTipDescription(tipPercent: Int): CategoryTip {
+        return calculatorManager.addDescriptionTip(tipPercent)
     }
 }
