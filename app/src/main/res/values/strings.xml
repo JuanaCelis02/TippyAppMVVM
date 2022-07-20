@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TippyAppMVVM</string>
+    <string name="format">%.3f</string>
+    <string name="percent">%</string>
 </resources>

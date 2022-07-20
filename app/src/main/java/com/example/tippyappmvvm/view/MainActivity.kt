@@ -32,9 +32,8 @@ class MainActivity : AppCompatActivity() {
                 /**
                  * Imprime en LogCat el valor de la barra de progreso
                  */
-                Log.i("TAG", "onProgressChanged $progress")
 
-                binding.tvTipPercentLabel.text = progress.toString()
+                (progress.toString() + getString(R.string.percent)).also { binding.tvTipPercentLabel.text = it }
                 obtainTipAndTotal()
                 changeDescription()
             }
@@ -85,10 +84,10 @@ class MainActivity : AppCompatActivity() {
          * Se actualiza la actividad
          */
         val tipAmount = viewModel.calculateTipAmount(binding.etBaseAmount.text.toString(), binding.seekBarTip.progress)
-        binding.tvTipAmount.text = "%.3f".format(tipAmount)
+        binding.tvTipAmount.text = getString(R.string.format).format(tipAmount)
 
         val totalAmount = viewModel.calculateTotalAmount(binding.etBaseAmount.text.toString())
-        binding.tvTotalAmount.text = "%.3f".format(totalAmount)
+        binding.tvTotalAmount.text = getString(R.string.format).format(totalAmount)
     }
 
 

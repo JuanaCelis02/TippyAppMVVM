@@ -1,8 +1,8 @@
 package com.example.tippyappmvvm.model
 
-class CalculatorManager() {
+class CalculatorManager {
 
-    var tipAmount:Double = 0.0
+    private var tipAmount:Double = 0.0
 
     fun calculateTipAmount(baseAmount: String, percentTip: Int): Double {
         tipAmount = baseAmount.toDouble() * percentTip / 100
