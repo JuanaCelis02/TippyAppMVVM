@@ -60,12 +60,14 @@ class MainActivity : AppCompatActivity() {
             binding.tvTotalAmount.text = ""
             return
         }
-
         /**
          * Se actualiza la actividad
          */
-        val totalAmount = viewModel.calculateTipAmount(binding.etBaseAmount.text.toString(), binding.seekBarTip.progress)
-        binding.tvTipAmount.text = totalAmount
+        viewModel.calculateTipAmount(binding.etBaseAmount.text.toString(), binding.seekBarTip.progress)
+        binding.tvTipAmount.text = "%.3f".format(viewModel.savedTipValue)
+
+        viewModel.calculateTotalAmount(binding.etBaseAmount.text.toString())
+        binding.tvTotalAmount.text = "%.3f".format(viewModel.savedTotalAmount)
     }
 
 }
